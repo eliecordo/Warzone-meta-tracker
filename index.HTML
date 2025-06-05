@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warzone Meta Tracker</title>
+    <title>Pay Vuelta</title>
     <style>
         * {
             margin: 0;
@@ -13,508 +13,364 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            color: #ffffff;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             min-height: 100vh;
+            color: white;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        .header {
+        header {
             text-align: center;
-            margin-bottom: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 0;
         }
 
-        .header h1 {
-            font-size: 3.5rem;
-            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd700);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .logo {
+            font-size: 3rem;
             margin-bottom: 10px;
-            text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+            color: #64b5f6;
         }
 
-        .last-update {
-            color: #a0a0a0;
-            font-size: 0.9rem;
-            margin-top: 10px;
-        }
-
-        .filters {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .filter-btn {
-            background: rgba(255, 107, 53, 0.2);
-            border: 2px solid #ff6b35;
-            color: #ffffff;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .logo-text {
+            font-size: 2.5rem;
             font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .filter-btn:hover {
-            background: rgba(255, 107, 53, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
-        }
-
-        .filter-btn.active {
-            background: #ff6b35;
-            box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
-        }
-
-        .weapons-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .weapon-card {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .weapon-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #ff6b35, #f7931e, #ffd700);
-        }
-
-        .weapon-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 107, 53, 0.5);
-        }
-
-        .weapon-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .weapon-name {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #ff6b35;
-        }
-
-        .meta-tier {
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .tier-s { background: #ff2d55; }
-        .tier-a { background: #ff9500; }
-        .tier-b { background: #ffcc02; color: #000; }
-        .tier-c { background: #32d74b; color: #000; }
-
-        .weapon-stats {
+        .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 40px;
+            margin: 40px 0;
+            align-items: center;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-section h2 {
+            color: #64b5f6;
             margin-bottom: 20px;
+            font-size: 1.8rem;
         }
 
-        .stat {
-            text-align: center;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: #a0a0a0;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #ffd700;
-        }
-
-        .ttk-value {
-            color: #32d74b;
-        }
-
-        .attachments {
-            margin-top: 20px;
-        }
-
-        .attachments h4 {
-            color: #ff6b35;
+        .contact-info {
+            display: flex;
+            align-items: center;
             margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .contact-info span {
+            margin-right: 10px;
             font-size: 1.2rem;
         }
 
-        .attachment-grid {
+        .payment-methods h2 {
+            color: #64b5f6;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .payment-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
         }
 
-        .attachment {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 8px;
+        .payment-item {
             text-align: center;
-            border: 1px solid rgba(255, 107, 53, 0.2);
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
         }
 
-        .attachment-type {
-            font-size: 0.7rem;
-            color: #a0a0a0;
-            text-transform: uppercase;
-            margin-bottom: 3px;
-        }
-
-        .attachment-name {
-            font-weight: bold;
-            color: #ffffff;
-            font-size: 0.9rem;
-        }
-
-        .search-container {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .search-input {
+        .payment-item:hover {
+            transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 107, 53, 0.3);
+            border-color: #64b5f6;
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .telegram-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #0088cc, #0077b3);
+            color: white;
+            padding: 12px 25px;
             border-radius: 25px;
-            padding: 15px 25px;
-            font-size: 1.1rem;
-            color: #ffffff;
-            width: 400px;
-            max-width: 90%;
-            backdrop-filter: blur(10px);
+            text-decoration: none;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-weight: bold;
         }
 
-        .search-input::placeholder {
-            color: #a0a0a0;
+        .telegram-btn:hover {
+            background: linear-gradient(45deg, #0077b3, #006699);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
         }
 
-        .search-input:focus {
-            outline: none;
-            border-color: #ff6b35;
-            box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: white;
+        }
+
+        .address-text {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            word-break: break-all;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .copy-btn {
+            background: #64b5f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #42a5f5;
         }
 
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.5rem;
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
             
-            .weapons-grid {
-                grid-template-columns: 1fr;
+            .logo-text {
+                font-size: 2rem;
             }
             
-            .weapon-stats {
-                grid-template-columns: 1fr;
+            .payment-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
+
+            .modal-content {
+                width: 95%;
+                margin: 30% auto;
+            }
+        }
+
+        .floating-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 70%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 40%;
+            left: 80%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
     </style>
 </head>
 <body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
     <div class="container">
-        <div class="header">
-            <h1>🎯 WARZONE META TRACKER</h1>
-            <p>Las mejores armas y configuraciones actualizadas</p>
-            <div class="last-update">Última actualización: <span id="current-date"></span></div>
+        <header>
+            <div class="logo">💰</div>
+            <h1 class="logo-text">Pay Vuelta</h1>
+        </header>
+
+        <div class="main-content">
+            <div class="info-card contact-section">
+                <h2>📞 Contacto</h2>
+                <div class="contact-info">
+                    <span>📱</span>
+                    <span>Telegram: 18295648554</span>
+                </div>
+                <a href="https://t.me/+18295648554" class="telegram-btn">
+                    💬 Contactar por Telegram
+                </a>
+            </div>
+
+            <div class="info-card payment-methods">
+                <h2>💳 Métodos de Pago Aceptados</h2>
+                <div class="payment-grid">
+                    <div class="payment-item" onclick="showBitcoinModal()">
+                        <span class="payment-icon">₿</span>
+                        <div>Bitcoin</div>
+                    </div>
+                    <div class="payment-item" onclick="showEthereumModal()">
+                        <span class="payment-icon">♦</span>
+                        <div>Ethereum</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="search-container">
-            <input type="text" class="search-input" id="searchInput" placeholder="Buscar arma...">
+        <div class="footer">
+            <p>&copy; 2025 Pay Vuelta. Todos los derechos reservados.</p>
         </div>
+    </div>
 
-        <div class="filters">
-            <button class="filter-btn active" data-category="all">TODAS</button>
-            <button class="filter-btn" data-category="AR">RIFLES DE ASALTO</button>
-            <button class="filter-btn" data-category="SMG">SUBFUSILES</button>
-            <button class="filter-btn" data-category="LMG">AMETRALLADORAS</button>
-            <button class="filter-btn" data-category="SNIPER">FRANCOTIRADORES</button>
-            <button class="filter-btn" data-category="MARKSMAN">RIFLES TÁCTICOS</button>
+    <!-- Modal Bitcoin -->
+    <div id="bitcoinModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBitcoinModal()">&times;</span>
+            <h2>₿ Dirección Bitcoin</h2>
+            <div class="address-text" id="btcAddress">bc1p54wgta3fl976vnpxaua233vj09d728fgtl2j55t4effgm4dpzmss87g6jc</div>
+            <button class="copy-btn" onclick="copyBitcoin()">📋 Copiar Dirección</button>
         </div>
+    </div>
 
-        <div class="weapons-grid" id="weaponsGrid">
-            <!-- Las armas se cargarán aquí via JavaScript -->
+    <!-- Modal Ethereum -->
+    <div id="ethereumModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEthereumModal()">&times;</span>
+            <h2>♦ Dirección Ethereum</h2>
+            <div class="address-text" id="ethAddress">0x55310b49Fed77E66C7a1382f97DcBda9D3eEfa41</div>
+            <button class="copy-btn" onclick="copyEthereum()">📋 Copiar Dirección</button>
         </div>
     </div>
 
     <script>
-        // Base de datos de armas meta
-        const weaponsData = [
-            {
-                name: "CR-56 AMAX",
-                category: "AR",
-                tier: "S",
-                damage: 95,
-                ttk: "0.58s",
-                range: 85,
-                mobility: 70,
-                attachments: [
-                    { type: "Muzzle", name: "Compensador Monolítico" },
-                    { type: "Cañón", name: "Cañón XRK Zodiac S440" },
-                    { type: "Óptica", name: "VLK 3.0x" },
-                    { type: "Munición", name: "Munición de 45 balas" },
-                    { type: "Culata", name: "Culata Close Quarters" }
-                ]
-            },
-            {
-                name: "Jackal PDW",
-                category: "SMG",
-                tier: "S",
-                damage: 88,
-                ttk: "0.42s",
-                range: 60,
-                mobility: 95,
-                attachments: [
-                    { type: "Muzzle", name: "Silenciador integral" },
-                    { type: "Cañón", name: "Cañón largo reforzado" },
-                    { type: "Óptica", name: "Jackal BRM" },
-                    { type: "Munición", name: "Cargador extendido II" },
-                    { type: "Empuñadura", name: "Empuñadura vertical" }
-                ]
-            },
-            {
-                name: "Kilo 141",
-                category: "AR",
-                tier: "A",
-                damage: 82,
-                ttk: "0.65s",
-                range: 80,
-                mobility: 75,
-                attachments: [
-                    { type: "Muzzle", name: "Silenciador Monolítico" },
-                    { type: "Cañón", name: "Cañón Singuard Arms 19.8" },
-                    { type: "Óptica", name: "VLK 3.0x" },
-                    { type: "Munición", name: "Munición de 60 balas" },
-                    { type: "Culata", name: "Culata Commando Foregrip" }
-                ]
-            },
-            {
-                name: "C9",
-                category: "SMG",
-                tier: "A",
-                damage: 86,
-                ttk: "0.48s",
-                range: 55,
-                mobility: 90,
-                attachments: [
-                    { type: "Muzzle", name: "Supresor compensador" },
-                    { type: "Cañón", name: "Cañón reforzado" },
-                    { type: "Óptica", name: "Kepler Microflex" },
-                    { type: "Munición", name: "Cargador rápido extendido" },
-                    { type: "Empuñadura", name: "Empuñadura angular" }
-                ]
-            },
-            {
-                name: "Grau 5.56",
-                category: "AR",
-                tier: "A",
-                damage: 78,
-                ttk: "0.72s",
-                range: 88,
-                mobility: 72,
-                attachments: [
-                    { type: "Muzzle", name: "Silenciador Monolítico" },
-                    { type: "Cañón", name: "Tempus 26.4 Archangel" },
-                    { type: "Óptica", name: "60 Round Mags" },
-                    { type: "Munición", name: "Munición de 60 balas" },
-                    { type: "Empuñadura", name: "Commando Foregrip" }
-                ]
-            },
-            {
-                name: "HDR",
-                category: "SNIPER",
-                tier: "S",
-                damage: 150,
-                ttk: "Instante*",
-                range: 100,
-                mobility: 45,
-                attachments: [
-                    { type: "Muzzle", name: "Silenciador Monolítico" },
-                    { type: "Cañón", name: "Cañón HDR Pro" },
-                    { type: "Óptica", name: "Variable Zoom" },
-                    { type: "Culata", name: "FTAC Champion" },
-                    { type: "Empuñadura", name: "Bipod" }
-                ]
-            },
-            {
-                name: "Kompakt 92",
-                category: "SMG",
-                tier: "A",
-                damage: 84,
-                ttk: "0.51s",
-                range: 58,
-                mobility: 88,
-                attachments: [
-                    { type: "Muzzle", name: "Silenciador" },
-                    { type: "Cañón", name: "Cañón largo" },
-                    { type: "Óptica", name: "Reflex" },
-                    { type: "Munición", name: "Cargador extendido" },
-                    { type: "Empuñadura", name: "Empuñadura vertical" }
-                ]
-            },
-            {
-                name: "DM-10",
-                category: "MARKSMAN",
-                tier: "B",
-                damage: 92,
-                ttk: "0.55s",
-                range: 90,
-                mobility: 65,
-                attachments: [
-                    { type: "Muzzle", name: "Compensador" },
-                    { type: "Cañón", name: "Cañón pesado" },
-                    { type: "Óptica", name: "4x Scope" },
-                    { type: "Munición", name: "Munición perforante" },
-                    { type: "Culata", name: "Culata de precisión" }
-                ]
-            }
-        ];
-
-        // Función para mostrar la fecha actual
-        function updateDate() {
-            const now = new Date();
-            const options = { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            document.getElementById('current-date').textContent = now.toLocaleDateString('es-ES', options);
+        function showBitcoinModal() {
+            document.getElementById('bitcoinModal').style.display = 'block';
         }
 
-        // Función para renderizar las armas
-        function renderWeapons(weapons) {
-            const grid = document.getElementById('weaponsGrid');
-            grid.innerHTML = '';
+        function closeBitcoinModal() {
+            document.getElementById('bitcoinModal').style.display = 'none';
+        }
 
-            weapons.forEach(weapon => {
-                const weaponCard = document.createElement('div');
-                weaponCard.className = 'weapon-card';
-                weaponCard.innerHTML = `
-                    <div class="weapon-header">
-                        <h3 class="weapon-name">${weapon.name}</h3>
-                        <span class="meta-tier tier-${weapon.tier.toLowerCase()}">${weapon.tier} TIER</span>
-                    </div>
-                    <div class="weapon-stats">
-                        <div class="stat">
-                            <div class="stat-label">DAÑO</div>
-                            <div class="stat-value">${weapon.damage}</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-label">TTK</div>
-                            <div class="stat-value ttk-value">${weapon.ttk}</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-label">ALCANCE</div>
-                            <div class="stat-value">${weapon.range}</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-label">MOVILIDAD</div>
-                            <div class="stat-value">${weapon.mobility}</div>
-                        </div>
-                    </div>
-                    <div class="attachments">
-                        <h4>🔧 Mejor Configuración</h4>
-                        <div class="attachment-grid">
-                            ${weapon.attachments.map(att => `
-                                <div class="attachment">
-                                    <div class="attachment-type">${att.type}</div>
-                                    <div class="attachment-name">${att.name}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(weaponCard);
+        function showEthereumModal() {
+            document.getElementById('ethereumModal').style.display = 'block';
+        }
+
+        function closeEthereumModal() {
+            document.getElementById('ethereumModal').style.display = 'none';
+        }
+
+        function copyBitcoin() {
+            const address = 'bc1p54wgta3fl976vnpxaua233vj09d728fgtl2j55t4effgm4dpzmss87g6jc';
+            navigator.clipboard.writeText(address).then(function() {
+                alert('¡Dirección Bitcoin copiada al portapapeles!');
             });
         }
 
-        // Filtros
-        function setupFilters() {
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    // Remover clase active de todos los botones
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    // Agregar clase active al botón clickeado
-                    btn.classList.add('active');
-                    
-                    const category = btn.dataset.category;
-                    const filteredWeapons = category === 'all' 
-                        ? weaponsData 
-                        : weaponsData.filter(weapon => weapon.category === category);
-                    
-                    renderWeapons(filteredWeapons);
-                });
+        function copyEthereum() {
+            const address = '0x55310b49Fed77E66C7a1382f97DcBda9D3eEfa41';
+            navigator.clipboard.writeText(address).then(function() {
+                alert('¡Dirección Ethereum copiada al portapapeles!');
             });
         }
 
-        // Búsqueda
-        function setupSearch() {
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase();
-                const filteredWeapons = weaponsData.filter(weapon => 
-                    weapon.name.toLowerCase().includes(searchTerm)
-                );
-                renderWeapons(filteredWeapons);
-            });
-        }
-
-        // Inicializar la aplicación
-        function init() {
-            updateDate();
-            renderWeapons(weaponsData);
-            setupFilters();
-            setupSearch();
+        // Cerrar modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            const bitcoinModal = document.getElementById('bitcoinModal');
+            const ethereumModal = document.getElementById('ethereumModal');
             
-            // Actualizar fecha cada minuto
-            setInterval(updateDate, 60000);
+            if (event.target == bitcoinModal) {
+                bitcoinModal.style.display = 'none';
+            }
+            if (event.target == ethereumModal) {
+                ethereumModal.style.display = 'none';
+            }
         }
-
-        // Iniciar cuando el DOM esté cargado
-        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
